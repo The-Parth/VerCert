@@ -35,7 +35,7 @@ function Footer() {
                         <ul className="space-y-2">
                             {[
                                 "Home",
-                                "Issue Certificate",
+                                "Issue",
                                 "Verify",
                                 "About",
                             ].map((item, index) => (

@@ -35,7 +35,7 @@ function Header() {
           {/* Desktop Navigation - hidden on medium screens and below */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
-              {["Home", "Issue Certificate", "Verify", "About"].map((item, index) => (
+              {["Home", "Issue", "Verify", "About"].map((item, index) => (
                 <li key={index}>
                   <Link
                     to={index === 0 ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
@@ -80,7 +80,7 @@ function Header() {
         >
           <nav>
             <ul className="flex flex-col items-center py-4 space-y-4">
-              {["Home", "Issue Certificate", "Verify", "About"].map((item, index) => (
+              {["Home", "Issue", "Verify", "About"].map((item, index) => (
                 <li key={index} className="w-full text-center">
                   <Link
                     to={index === 0 ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
