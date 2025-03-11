@@ -9,18 +9,17 @@ import './App.css'
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Header />
-      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/issue" element={<Issue />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/about" element={<About />} />
         </Routes>
-      </main>
       <Footer />
-    </div>
+    </>
+      
   )
 }
 
