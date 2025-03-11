@@ -1,8 +1,7 @@
-/* #root {
-  margin: 0 auto;
-  text-align: center;
+ #root {
+  background-color: #1a202c;
 }
-
+/* 
 header {
   background-color: var(--primary-bg, #1a202c);
   color: white;
@@ -10,4 +9,4 @@ header {
 }
 
 main {
-} */
+} */ 
