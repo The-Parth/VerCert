@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Issue.css"; // Import custom styling
 
 const Issue = () => {
   const [formData, setFormData] = useState({
@@ -22,34 +23,34 @@ const Issue = () => {
   };
 
   return (
-    <div className="container mx-auto text-center py-20">
-      <h2 className="text-3xl font-bold">Issue a Certificate</h2>
-      <div className="mt-6 max-w-lg mx-auto">
+    <div className="issue-container">
+      <h2 className="issue-title">Issue a Certificate</h2>
+      <div className="issue-form">
         <input
           type="text"
           name="recipient"
           placeholder="Recipient Name"
-          className="block w-full p-2 border rounded-md mt-2"
+          className="issue-input"
           onChange={handleChange}
         />
         <input
           type="text"
           name="course"
           placeholder="Course Name"
-          className="block w-full p-2 border rounded-md mt-2"
+          className="issue-input"
           onChange={handleChange}
         />
         <input
           type="date"
           name="date"
-          className="block w-full p-2 border rounded-md mt-2"
+          className="issue-input"
           onChange={handleChange}
         />
-        <button onClick={handleIssue} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button onClick={handleIssue} className="issue-button">
           Issue Certificate
         </button>
       </div>
-      {message && <p className="mt-4 text-lg">{message}</p>}
+      {message && <p className="issue-message">{message}</p>}
     </div>
   );
 };

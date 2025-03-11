@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Verify.css"; // Import custom styling
 
 const Verify = () => {
   const [certificateId, setCertificateId] = useState("");
@@ -14,23 +15,23 @@ const Verify = () => {
   };
 
   return (
-    <div className="container mx-auto text-center py-20">
-      <h2 className="text-3xl font-bold">Verify Your Credential</h2>
-      <div className="mt-6 max-w-md mx-auto">
+    <div className="verify-container">
+      <h2 className="verify-title">Verify Your Credential</h2>
+      <div className="verify-box">
         <input
           type="text"
           placeholder="Enter Certificate ID"
           value={certificateId}
           onChange={(e) => setCertificateId(e.target.value)}
-          className="block w-full p-2 border rounded-md mt-2"
+          className="verify-input"
         />
-        <button onClick={handleVerify} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button onClick={handleVerify} className="verify-button">
           Verify
         </button>
       </div>
-      {result && <p className="mt-4 text-lg">{result}</p>}
+      {result && <p className="verify-message">{result}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default Verify
+export default Verify;
