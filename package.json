@@ -1,9 +1,9 @@
 {
-    "scripts": {
-        "frontend": "cd frontend && npm run dev",
-        "server": "cd server && npm run dev",
-        "build": "cd frontend && npm run build",
-        "install": "cd frontend && npm install && cd ../server && npm install",
-        "dev": "npm run frontend"
-    }
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "server": "cd server && npm run dev",
+    "build": "cd frontend && npm run build",
+    "install": "cd frontend && npm install && cd ../server && npm install",
+    "dev": "npm run frontend"
+  }
 }

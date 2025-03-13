@@ -1,16 +1,16 @@
-import { useState } from "react";
-import Header from "../../components/Header/Header";
+import { useState } from 'react';
+import Header from '../../components/Header/Header';
 
 const Verify = () => {
-  const [certificateId, setCertificateId] = useState("");
-  const [result, setResult] = useState("");
+  const [certificateId, setCertificateId] = useState('');
+  const [result, setResult] = useState('');
 
   const handleVerify = () => {
     if (certificateId) {
       // Dummy verification process; in a real app, call an API
-      setResult("✅ Certificate is valid!");
+      setResult('✅ Certificate is valid!');
     } else {
-      setResult("⚠️ Please enter a certificate ID.");
+      setResult('⚠️ Please enter a certificate ID.');
     }
   };
 
@@ -22,7 +22,7 @@ const Verify = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
             Verify Your Credential
           </h2>
-          
+
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl shadow-blue-500/10">
             <div className="space-y-6">
               <div className="group relative">
@@ -35,9 +35,9 @@ const Verify = () => {
                 />
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-cyan-400 to-blue-500 group-focus-within:w-full transition-all duration-300"></div>
               </div>
-              
-              <button 
-                onClick={handleVerify} 
+
+              <button
+                onClick={handleVerify}
                 className="group relative w-full py-4 px-6 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-lg shadow-lg shadow-blue-500/30 transition-all duration-300"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -60,13 +60,15 @@ const Verify = () => {
               </button>
             </div>
           </div>
-          
+
           {result && (
-            <div className={`mt-6 p-4 text-center rounded-lg transition-all duration-500 ${
-              result.includes("✅") 
-                ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-            }`}>
+            <div
+              className={`mt-6 p-4 text-center rounded-lg transition-all duration-500 ${
+                result.includes('✅')
+                  ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+              }`}
+            >
               <p className="text-lg font-medium">{result}</p>
             </div>
           )}

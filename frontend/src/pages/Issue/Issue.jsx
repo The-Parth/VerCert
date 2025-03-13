@@ -1,14 +1,14 @@
-import { useState } from "react";
-import Header from "../../components/Header/Header";
+import { useState } from 'react';
+import Header from '../../components/Header/Header';
 
 const Issue = () => {
   const [formData, setFormData] = useState({
-    recipient: "",
-    course: "",
-    date: "",
+    recipient: '',
+    course: '',
+    date: '',
   });
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,9 +16,9 @@ const Issue = () => {
 
   const handleIssue = () => {
     if (formData.recipient && formData.course && formData.date) {
-      setMessage("✅ Certificate Issued Successfully!");
+      setMessage('✅ Certificate Issued Successfully!');
     } else {
-      setMessage("⚠️ Please fill out all fields.");
+      setMessage('⚠️ Please fill out all fields.');
     }
   };
 
@@ -30,7 +30,7 @@ const Issue = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
             Issue a Certificate
           </h2>
-          
+
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl shadow-blue-500/10">
             <div className="space-y-6">
               <div className="group relative">
@@ -42,7 +42,7 @@ const Issue = () => {
                   onChange={handleChange}
                 />
               </div>
-              
+
               <div className="group relative">
                 <input
                   type="text"
@@ -52,7 +52,7 @@ const Issue = () => {
                   onChange={handleChange}
                 />
               </div>
-              
+
               <div className="group relative">
                 <input
                   type="date"
@@ -61,9 +61,9 @@ const Issue = () => {
                   onChange={handleChange}
                 />
               </div>
-              
-              <button 
-                onClick={handleIssue} 
+
+              <button
+                onClick={handleIssue}
                 className="group relative w-full py-4 px-6 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-lg shadow-lg shadow-blue-500/30 transition-all duration-300"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -86,13 +86,15 @@ const Issue = () => {
               </button>
             </div>
           </div>
-          
+
           {message && (
-            <div className={`mt-6 p-4 text-center rounded-lg transition-all duration-500 ${
-              message.includes("✅") 
-                ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-            }`}>
+            <div
+              className={`mt-6 p-4 text-center rounded-lg transition-all duration-500 ${
+                message.includes('✅')
+                  ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+              }`}
+            >
               <p className="text-lg font-medium">{message}</p>
             </div>
           )}

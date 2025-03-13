@@ -1,14 +1,14 @@
-import { useState } from "react";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
+import { useState } from 'react';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 // Importing local images
-import accessibleImg from "../../assets/accessible.png";
-import secureImg from "../../assets/secure.png";
-import ecoImg from "../../assets/eco.png";
-import verificationImg from "../../assets/verification.png";
-import fastImg from "../../assets/fast.png";
-import trustImg from "../../assets/trust.png";
+import accessibleImg from '../../assets/accessible.png';
+import secureImg from '../../assets/secure.png';
+import ecoImg from '../../assets/eco.png';
+import verificationImg from '../../assets/verification.png';
+import fastImg from '../../assets/fast.png';
+import trustImg from '../../assets/trust.png';
 
 const About = () => {
   return (
@@ -25,7 +25,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2 md:order-1">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={secureImg} alt="Secure & Tamper-Proof" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={secureImg}
+                    alt="Secure & Tamper-Proof"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 md:order-2 transition-all duration-300 transform hover:-translate-y-2">
@@ -34,8 +38,9 @@ const About = () => {
                   Secure & Tamper-Proof
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  VerCert uses blockchain technology to ensure certificates cannot be altered, forged, or lost. Your credentials
-                  are permanently stored and verifiable worldwide.
+                  VerCert uses blockchain technology to ensure certificates
+                  cannot be altered, forged, or lost. Your credentials are
+                  permanently stored and verifiable worldwide.
                 </p>
               </div>
             </div>
@@ -44,7 +49,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={accessibleImg} alt="Global Access" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={accessibleImg}
+                    alt="Global Access"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 transition-all duration-300 transform hover:-translate-y-2">
@@ -53,8 +62,9 @@ const About = () => {
                   Globally Accessible
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  No more carrying paper certificates! VerCert allows you to access, share, and verify credentials instantly from
-                  anywhere in the world.
+                  No more carrying paper certificates! VerCert allows you to
+                  access, share, and verify credentials instantly from anywhere
+                  in the world.
                 </p>
               </div>
             </div>
@@ -63,7 +73,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2 md:order-1">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={verificationImg} alt="Instant Verification" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={verificationImg}
+                    alt="Instant Verification"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 md:order-2 transition-all duration-300 transform hover:-translate-y-2">
@@ -72,8 +86,8 @@ const About = () => {
                   Instant Verification
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  Employers, universities, and institutions can verify credentials in seconds, reducing fraud and increasing
-                  trust.
+                  Employers, universities, and institutions can verify
+                  credentials in seconds, reducing fraud and increasing trust.
                 </p>
               </div>
             </div>
@@ -82,7 +96,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={ecoImg} alt="Eco-Friendly" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={ecoImg}
+                    alt="Eco-Friendly"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 transition-all duration-300 transform hover:-translate-y-2">
@@ -91,7 +109,8 @@ const About = () => {
                   Digital & Eco-Friendly
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  Moving away from paper certificates helps reduce waste and contributes to a greener planet. VerCert promotes
+                  Moving away from paper certificates helps reduce waste and
+                  contributes to a greener planet. VerCert promotes
                   sustainability with a fully digital credentialing system.
                 </p>
               </div>
@@ -101,7 +120,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2 md:order-1">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={fastImg} alt="Fast Processing" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={fastImg}
+                    alt="Fast Processing"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 md:order-2 transition-all duration-300 transform hover:-translate-y-2">
@@ -110,8 +133,9 @@ const About = () => {
                   Fast & Reliable
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  Our system is optimized for fast issuance and instant verification, providing a seamless experience for both
-                  issuers and recipients.
+                  Our system is optimized for fast issuance and instant
+                  verification, providing a seamless experience for both issuers
+                  and recipients.
                 </p>
               </div>
             </div>
@@ -120,7 +144,11 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
               <div className="w-full md:w-2/5 order-2">
                 <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-2 border border-blue-500/20 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 transform hover:-translate-y-2">
-                  <img src={trustImg} alt="Trust & Transparency" className="w-full h-auto rounded-xl" />
+                  <img
+                    src={trustImg}
+                    alt="Trust & Transparency"
+                    className="w-full h-auto rounded-xl"
+                  />
                 </div>
               </div>
               <div className="w-full md:w-3/5 order-1 transition-all duration-300 transform hover:-translate-y-2">
@@ -129,8 +157,8 @@ const About = () => {
                   Trusted by Many
                 </h3>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  Organizations, educational institutions, and businesses trust VerCert for secure and verifiable digital
-                  credentials.
+                  Organizations, educational institutions, and businesses trust
+                  VerCert for secure and verifiable digital credentials.
                 </p>
               </div>
             </div>
