@@ -7,6 +7,7 @@ import fileUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 
 import authRoutes from './routes/auth.js';
+import webauthRoutes from './routes/webauth.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ app.use(bodyParser.text());
 app.use(fileUpload());
 
 app.use('/auth', authRoutes);
+app.use('/webauth', webauthRoutes);
 
 app.listen(3000, () => {
     connectDB();

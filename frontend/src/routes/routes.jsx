@@ -5,6 +5,7 @@ import Home from "../pages/Home/Home"
 import Issue from "../pages/Issue/Issue"
 import Verify from "../pages/Verify/Verify"
 import About from "../pages/About/About";
+import WebAuth from "../pages/WebAuth/WebAuth";
 
 const routes = [
     {
@@ -29,6 +30,10 @@ const routes = [
         path: "/about",
         Component: About,
     },
+    {
+        path: "/webauth",
+        Component: WebAuth,
+    }
 ];
 
 export const router = createBrowserRouter(routes);
