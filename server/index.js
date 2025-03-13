@@ -7,7 +7,7 @@ import fileUpload from 'express-fileupload';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/authRoutes.js';
 import webauthRoutes from './routes/webauth.js';
 
 dotenv.config();
