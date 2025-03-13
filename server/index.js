@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import connectDB from './src/db.js';
+
 import bodyParser from 'body-parser';
 import fileUpload from 'express-fileupload';
 import cookieParser from 'cookie-parser';
@@ -33,7 +34,11 @@ app.get(`${prepend}/`, (req, res) => {
 app.use(`${prepend}/auth`, authRoutes);
 app.use(`${prepend}/webauth`, webauthRoutes);
 
+mongoose
+  .connect(process.env.MONGO_URI, {})
+  .then(() => console.log('MongoDB Connected'))
+  .catch((err) => console.error(' MongoDB Connection Error:', err));
+
 app.listen(3000, () => {
-  connectDB();
   console.log('Server is running on port 3000');
 });

@@ -8,6 +8,8 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from '@simplewebauthn/server';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Schemas
 import { Passkey, InProcessItem } from '../models/PasskeyAuth.js';
@@ -46,8 +48,14 @@ const loginLimiter = rateLimit({
 
 webauthRouter.use(generalLimiter);
 
+webauthRouter.get("/", (req, res) => {
+  res.json({"message":"Working"});
+});
+
 webauthRouter.post('/register', loginLimiter, async (req, res) => {
   const { username } = req.body; // same as email
+  console.log('Username', username);
+  console.log("MONGO", process.env.MONGO_URI);
   // check if user exists
 
   // Disabled temporarily
@@ -64,6 +72,8 @@ webauthRouter.post('/register', loginLimiter, async (req, res) => {
   var passkeyUser = await Passkey.findOne({
     username: username,
   });
+
+    console.log('Username', passkeyUser);
 
   var userID = new Uint8Array(32);
 
