@@ -35,7 +35,7 @@ function Hero() {
             <div className="pt-4">
               <button
                 onClick={() => {
-                  window.location.href = '/signin';
+                  window.location.href = '/signup';
                 }}
                 className="group relative px-8 py-4 bg-blue-500 hover:bg-blue-600 rounded-full text-lg font-medium transition-all duration-300"
               >

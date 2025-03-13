@@ -9,7 +9,7 @@ import Verify from "../pages/Verify/Verify";
 import About from "../pages/About/About";
 import WebAuth from "../pages/WebAuth/WebAuth";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Signin from "../pages/Signup/Signup";
+import Signup from "../pages/Signup/Signup";
 import Login from "../pages/Login/Login";
 
 const ProtectedRoute = ({ children }) => {
@@ -49,8 +49,8 @@ const router = createBrowserRouter([
     element: <WebAuth />,
   },
   {
-    path: "/signin",
-    element: <Signin />,
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/login",

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../AuthContext"; // ✅ Ensure correct path
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -24,6 +24,13 @@ const Login = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
       <div className="bg-gray-900 shadow-xl border border-gray-700 rounded-xl p-8 w-full max-w-md">
+        <Link to="/" className="group relative block text-center mb-6">
+          <span className="text-2xl font-bold uppercase tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:text-white">
+            VerCert
+          </span>
+          <span className="absolute -bottom-1 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-[120px] transition-all duration-300"></span>
+        </Link>
+        
         <h2 className="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
           Login to VerCert
         </h2>
@@ -62,7 +69,7 @@ const Login = () => {
         </form>
         <p className="text-gray-400 text-center mt-4">
           Don't have an account?{" "}
-          <a href="/signin" className="text-cyan-400 hover:underline">
+          <a href="/signup" className="text-cyan-400 hover:underline">
             Sign Up
           </a>
         </p>
