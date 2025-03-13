@@ -13,8 +13,6 @@ import {
 import { Passkey, InProcessItem } from '../models/PasskeyAuth.js';
 import User from '../models/User.js';
 
-app.set('trust proxy', 1);
-
 const webauthRouter = express.Router();
 const HOST = process.env.HOST || null;
 const HOST_URL = process.env.HOST_URL || null;

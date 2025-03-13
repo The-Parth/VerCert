@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(fileUpload());
+app.set('trust proxy', 1);
 
 app.get(`${prepend}/`, (req, res) => {
   res.send(`Welcome to the Vercet API version ${version}`);
