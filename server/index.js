@@ -18,19 +18,19 @@ const version = process.env.VERSION || 1;
 
 const hosted = process.env.HOSTED || false;
 
-app.get('/', (req, res) => {
-  res.send(`Welcome to the Vercet API version ${version}`);
-});
+const prepend = hosted ? '/api' : '';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(fileUpload());
 
-const prepend = hosted ? '/api' : '';
+app.get(`${prepend}/`, (req, res) => {
+  res.send(`Welcome to the Vercet API version ${version}`);
+});
 
 app.use(`${prepend}/auth`, authRoutes);
-app.use('${prepend}/webauth', webauthRoutes);
+app.use(`${prepend}/webauth`, webauthRoutes);
 
 app.listen(3000, () => {
   connectDB();

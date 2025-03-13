@@ -27,8 +27,8 @@ const authenticateUser = (req, res, next) => {
 };
 
 //  Test API Route
-router.get('/test', (req, res) => {
-  res.json({ msg: 'Auth API is working' });
+router.get('/', (req, res) => {
+  res.json({ msg: 'Auth route' });
 });
 
 //  Register User
