@@ -101,7 +101,7 @@ webauthRouter.post('/register', loginLimiter, async (req, res) => {
     userName: username,
     attestationType: 'none',
     authenticatorSelection: {
-      residentKey: 'discouraged',
+      residentKey: 'preferred',
       userVerification: 'preferred',
     },
   });
