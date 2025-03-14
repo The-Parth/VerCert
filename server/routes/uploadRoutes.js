@@ -1,6 +1,6 @@
-// Here, we upload the file to our azure s3
 import express from 'express';
 import dotenv from 'dotenv';
+import { uploadToAzure, generateSasUrl } from '../src/azureBlob.js';
 
 dotenv.config();
 
@@ -14,24 +14,32 @@ function fileSizeToHuman(size) {
 }
 
 router.post('/uploadcert', async (req, res) => {
-  // Route to upload certificate
-  if (!req.files) {
+  if (!req.files || !req.files.file) {
     return res.status(400).json({ msg: 'No file uploaded' });
   }
-  const len = req.files.file.length;
-  if (len > 1) {
-    return res.status(400).json({ msg: 'Only one file allowed' });
-  }
+
   const file = req.files.file;
   const fileName = file.name;
   const size = fileSizeToHuman(file.data.length);
-  
-  return res.status(200).json({
-    msg: 'File uploaded',
-    name: fileName,
-    size,
-  });
+
+  if (file.mimetype !== 'application/pdf') {
+    return res
+      .status(400)
+      .json({ msg: 'Invalid file type. Only PDF allowed.' });
+  }
+
+  if (file.data.length > 10 * 1024 * 1024) {
+    return res.status(400).json({ msg: 'File too large. Max 10MB allowed.' });
+  }
+
+  try {
+    const fileUrl = await uploadToAzure(file.data, fileName, file.mimetype);
+    const sasUrl = await generateSasUrl(fileUrl, 10); // 10 minutes expiry
+    const blobUrl = fileUrl.split('?')[0]; // Remove SAS token from URL
+    res.json({ msg: 'File uploaded successfully!', url: fileUrl, blobUrl, sasUrl });
+  } catch (error) {
+    res.status(500).json({ msg: 'File upload failed', error: error.message });
+  }
 });
 
 export default router;
-
