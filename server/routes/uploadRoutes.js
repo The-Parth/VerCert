@@ -25,7 +25,7 @@ router.post('/uploadcert', async (req, res) => {
   const file = req.files.file;
   const fileName = file.name;
   const size = fileSizeToHuman(file.data.length);
-
+  
   return res.status(200).json({
     msg: 'File uploaded',
     name: fileName,
