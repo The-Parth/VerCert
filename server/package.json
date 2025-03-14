@@ -5,7 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "stable": "nodemon --watch index.js index.js",
+    "prod": "node index.js"
   },
   "author": "Parth",
   "license": "ISC",

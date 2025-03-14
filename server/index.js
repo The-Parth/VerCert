@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
 import authRoutes from './routes/authRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 import webauthRoutes from './routes/webauth.js';
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.get(`${prepend}/`, (req, res) => {
 
 app.use(`${prepend}/auth`, authRoutes);
 app.use(`${prepend}/webauth`, webauthRoutes);
+app.use(`${prepend}/upload`, uploadRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, {})

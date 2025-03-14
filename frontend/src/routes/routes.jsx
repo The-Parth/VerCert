@@ -1,16 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../AuthContext"; // ✅ Import AuthContext only
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
-import Home from "../pages/Home/Home";
-import Issue from "../pages/Issue/Issue";
-import Verify from "../pages/Verify/Verify";
-import About from "../pages/About/About";
-import WebAuth from "../pages/WebAuth/WebAuth";
-import Dashboard from "../pages/Dashboard/Dashboard";
-import Signup from "../pages/Signup/Signup";
-import Login from "../pages/Login/Login";
+import { createBrowserRouter } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../AuthContext'; // ✅ Import AuthContext only
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
+import Home from '../pages/Home/Home';
+import Issue from '../pages/Issue/Issue';
+import Verify from '../pages/Verify/Verify';
+import About from '../pages/About/About';
+import WebAuth from '../pages/WebAuth/WebAuth';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import Signup from '../pages/Signup/Signup';
+import Login from '../pages/Login/Login';
 
 const ProtectedRoute = ({ children }) => {
   const auth = useContext(AuthContext); // ✅ Fix: Ensure `useContext` gets a valid value
@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: (
       <>
         <Header />
@@ -33,31 +33,31 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/issue",
+    path: '/issue',
     element: <Issue />,
   },
   {
-    path: "/verify",
+    path: '/verify',
     element: <Verify />,
   },
   {
-    path: "/about",
+    path: '/about',
     element: <About />,
   },
   {
-    path: "/webauth",
+    path: '/webauth',
     element: <WebAuth />,
   },
   {
-    path: "/signup",
+    path: '/signup',
     element: <Signup />,
   },
   {
-    path: "/login",
+    path: '/login',
     element: <Login />,
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: (
       <ProtectedRoute>
         <Header />

@@ -2,6 +2,8 @@
   "scripts": {
     "frontend": "cd frontend && npm run dev",
     "server": "cd server && npm run dev",
+    "stable": "cd server && npm run stable",
+    "prod": "cd server && npm run prod",
     "build": "cd frontend && npm run build",
     "install": "cd frontend && npm install && cd ../server && npm install",
     "dev": "npm run frontend"

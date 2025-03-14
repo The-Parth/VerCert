@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../AuthContext"; // ✅ Ensure correct path
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../AuthContext'; // ✅ Ensure correct path
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,9 +15,9 @@ const Login = () => {
     e.preventDefault();
     const response = await login(formData.email, formData.password);
     if (response.token) {
-      navigate("/dashboard");
+      navigate('/dashboard');
     } else {
-      alert(response.msg || "Login failed");
+      alert(response.msg || 'Login failed');
     }
   };
 
@@ -30,7 +30,7 @@ const Login = () => {
           </span>
           <span className="absolute -bottom-1 left-0 right-0 mx-auto w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-[120px] transition-all duration-300"></span>
         </Link>
-        
+
         <h2 className="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
           Login to VerCert
         </h2>
@@ -68,7 +68,7 @@ const Login = () => {
           </button>
         </form>
         <p className="text-gray-400 text-center mt-4">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <a href="/signup" className="text-cyan-400 hover:underline">
             Sign Up
           </a>

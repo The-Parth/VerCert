@@ -1,11 +1,15 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Signup = () => {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,12 +17,16 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await register(formData.fullName, formData.email, formData.password);
+    const response = await register(
+      formData.fullName,
+      formData.email,
+      formData.password
+    );
     if (response.msg) {
-      alert("Registered successfully! Please log in.");
-      navigate("/login");
+      alert('Registered successfully! Please log in.');
+      navigate('/login');
     } else {
-      alert(response.msg || "Registration failed");
+      alert(response.msg || 'Registration failed');
     }
   };
 
@@ -80,7 +88,7 @@ const Signup = () => {
           </button>
         </form>
         <p className="text-gray-400 text-center mt-4">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <a href="/login" className="text-cyan-400 hover:underline">
             Log in
           </a>
