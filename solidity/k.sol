@@ -3,23 +3,25 @@ pragma solidity ^0.8.26;
 
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
-contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
+contract DocumentStorage is Initializable, UUPSUpgradeable {
   struct Document {
     bytes32 sha256Hash;
     string ipfsCID;
   }
 
+  // Keep track of three owners (the deployer + two more)
   address[3] private owners;
 
-  // Authorized issuers and revokers using index-based tracking (gas optimized)
-  mapping(address => uint256) private issuerIndex;
-  address[] private issuerList;
+  // Track authorized issuers and revokers
+  mapping(address => bool) public authorizedIssuers;
+  mapping(address => bool) public authorizedRevokers;
 
-  mapping(address => uint256) private revokerIndex;
+  // Arrays to list current authorized issuers and revokers
+  address[] private issuerList;
   address[] private revokerList;
 
+  // Maps user ID to an array of documents
   mapping(uint256 => Document[]) private _userDocuments;
 
   event DocumentStored(
@@ -27,15 +29,21 @@ contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
     bytes32 sha256Hash,
     string ipfsCID
   );
+
   event DocumentRevoked(
     uint256 indexed userId,
     bytes32 sha256Hash,
     string ipfsCID
   );
-  event IssuerAdded(address indexed issuer);
-  event IssuerRemoved(address indexed issuer);
-  event RevokerAdded(address indexed revoker);
-  event RevokerRemoved(address indexed revoker);
+
+  event IssuerAdded(address issuer);
+  event IssuerRemoved(address issuer);
+  event RevokerAdded(address revoker);
+  event RevokerRemoved(address revoker);
+
+  // constructor() {
+  //     _disableInitializers();
+  // }
 
   modifier onlyOwners() {
     require(
@@ -55,67 +63,53 @@ contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
     __UUPSUpgradeable_init();
   }
 
-  function _authorizeUpgrade(address newImplementation)
-    internal
-    override
-    onlyOwners
-  {}
+  function _authorizeUpgrade(
+    address newImplementation
+  ) internal override onlyOwners {}
 
-  // Add authorized issuer (optimized)
+  // Owners can add/remove authorized issuers
   function addAuthorizedIssuer(address issuer) external onlyOwners {
-    require(
-      issuerIndex[issuer] == 0 &&
-        (issuerList.length == 0 || issuerList[0] != issuer),
-      'User already authorized'
-    );
-    issuerIndex[issuer] = issuerList.length + 1; // Store index (1-based)
+    require(!authorizedIssuers[issuer], 'User already authorised');
+    authorizedIssuers[issuer] = true;
     issuerList.push(issuer);
     emit IssuerAdded(issuer);
   }
 
-  // Remove authorized issuer (optimized)
   function removeAuthorizedIssuer(address issuer) external onlyOwners {
-    require(issuerIndex[issuer] > 0, 'User is not authorized');
+    require(authorizedIssuers[issuer], 'User is not authorised');
+    authorizedIssuers[issuer] = false;
 
-    uint256 index = issuerIndex[issuer] - 1; // Convert to 0-based index
-    uint256 lastIndex = issuerList.length - 1;
-
-    if (index != lastIndex) {
-      issuerList[index] = issuerList[lastIndex];
-      issuerIndex[issuerList[index]] = index + 1; // Update swapped index
+    // Remove the issuer from the array
+    for (uint256 i = 0; i < issuerList.length; i++) {
+      if (issuerList[i] == issuer) {
+        issuerList[i] = issuerList[issuerList.length - 1];
+        issuerList.pop();
+        break;
+      }
     }
-
-    issuerList.pop();
-    delete issuerIndex[issuer];
     emit IssuerRemoved(issuer);
   }
 
-  // Add authorized revoker (optimized)
+  // Owners can add/remove authorized revokers
   function addAuthorizedRevoker(address revoker) external onlyOwners {
-    require(
-      revokerIndex[revoker] == 0 &&
-        (revokerList.length == 0 || revokerList[0] != revoker),
-      'User already authorized'
-    );
-    revokerIndex[revoker] = revokerList.length + 1; // Store index (1-based)
+    require(!authorizedRevokers[revoker], 'User already authorised');
+    authorizedRevokers[revoker] = true;
     revokerList.push(revoker);
     emit RevokerAdded(revoker);
   }
 
-  // Remove authorized revoker (optimized)
   function removeAuthorizedRevoker(address revoker) external onlyOwners {
-    require(revokerIndex[revoker] > 0, 'User is not authorized');
+    require(authorizedRevokers[revoker], 'User is not authorised');
+    authorizedRevokers[revoker] = false;
 
-    uint256 index = revokerIndex[revoker] - 1; // Convert to 0-based index
-    uint256 lastIndex = revokerList.length - 1;
-
-    if (index != lastIndex) {
-      revokerList[index] = revokerList[lastIndex];
-      revokerIndex[revokerList[index]] = index + 1; // Update swapped index
+    // Remove the revoker from the array
+    for (uint256 i = 0; i < revokerList.length; i++) {
+      if (revokerList[i] == revoker) {
+        revokerList[i] = revokerList[revokerList.length - 1];
+        revokerList.pop();
+        break;
+      }
     }
-
-    revokerList.pop();
-    delete revokerIndex[revoker];
     emit RevokerRemoved(revoker);
   }
 
@@ -129,37 +123,26 @@ contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
     return revokerList;
   }
 
-  // Store a document (allowed for owners or authorized issuers) with frontrunning prevention
+  // Store a document (allowed for owners or authorized issuers)
   function storeDocument(
     uint256 userId,
     bytes32 sha256Hash,
     string memory ipfsCID
-  ) external nonReentrant {
+  ) public {
     require(
-      issuerIndex[msg.sender] > 0 ||
+      authorizedIssuers[msg.sender] ||
         msg.sender == owners[0] ||
         msg.sender == owners[1] ||
         msg.sender == owners[2],
       'Not authorized to store'
     );
-
-    // Prevent duplicate storage of the same document
-    Document[] storage docs = _userDocuments[userId];
-    for (uint256 i = 0; i < docs.length; i++) {
-      require(docs[i].sha256Hash != sha256Hash, 'Document already stored');
-    }
-
     _userDocuments[userId].push(Document(sha256Hash, ipfsCID));
     emit DocumentStored(userId, sha256Hash, ipfsCID);
   }
 
-  // Revoke a document securely with reentrancy guard
-  function revokeDocument(uint256 userId, bytes32 sha256Hash)
-    external
-    nonReentrant
-  {
+  function revokeDocument(uint256 userId, bytes32 sha256Hash) external {
     require(
-      revokerIndex[msg.sender] > 0 ||
+      authorizedRevokers[msg.sender] ||
         msg.sender == owners[0] ||
         msg.sender == owners[1] ||
         msg.sender == owners[2],
@@ -177,12 +160,10 @@ contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
     }
   }
 
-  // Get all documents for a user
-  function getDocuments(uint256 userId)
-    public
-    view
-    returns (bytes32[] memory, string[] memory)
-  {
+  // Get all documents for a user (accessible by anyone)
+  function getDocuments(
+    uint256 userId
+  ) public view returns (bytes32[] memory, string[] memory) {
     Document[] storage docs = _userDocuments[userId];
     bytes32[] memory hashes = new bytes32[](docs.length);
     string[] memory cids = new string[](docs.length);
@@ -193,7 +174,7 @@ contract DocumentStorage is Initializable, UUPSUpgradeable, ReentrancyGuard {
     return (hashes, cids);
   }
 
-  // Get the number of documents for a user
+  // Get the number of documents for a user (accessible by anyone)
   function getDocumentCount(uint256 userId) public view returns (uint256) {
     return _userDocuments[userId].length;
   }

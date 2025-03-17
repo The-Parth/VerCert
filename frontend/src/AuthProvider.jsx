@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from './api';
-import { AuthContext } from './AuthContext'; // ✅ Import only the context
+import { AuthContext } from './AuthContext'; 
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
 
   const checkUser = async () => {
     try {
-      const res = await API.get('/me');
+      const res = await API.get('/auth/me');
       setUser(res.data);
     } catch {
       setUser(null);
@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await API.post('/login', { email, password });
+      const res = await API.post('/auth/login', { email, password });
       setUser(res.data.user);
       return res.data;
     } catch (error) {
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
 
   const register = async (fullName, email, password) => {
     try {
-      const res = await API.post('/register', { fullName, email, password });
+      const res = await API.post('/auth/register', { fullName, email, password });
       return res.data;
     } catch (error) {
       return error.response.data;
