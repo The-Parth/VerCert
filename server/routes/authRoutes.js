@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
 //  Register User
 router.post('/register', async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, role } = req.body;
 
     // Validate input
     if (!fullName || !email || !password) {
@@ -55,8 +55,8 @@ router.post('/register', async (req, res) => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, salt);
+    const newUser = new User({ fullName, email, password: hashedPassword, role });
 
-    const newUser = new User({ fullName, email, password: hashedPassword });
     await newUser.save();
 
     res.status(201).json({ msg: 'User registered successfully' });

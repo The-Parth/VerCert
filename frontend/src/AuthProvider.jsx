@@ -31,20 +31,25 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (fullName, email, password) => {
+  // ✅ Fixed: Now accepts and passes 'role'
+  const register = async (fullName, email, password, role) => {
     try {
-      const res = await API.post('/auth/register', { fullName, email, password });
+      const res = await API.post('/auth/register', {
+        fullName,
+        email,
+        password,
+        role,
+      });
       return res.data;
     } catch (error) {
       return error.response.data;
     }
   };
-
   const logout = async () => {
-    await API.get('/logout');
-    setUser(null);
+    await API.get('/auth/logout');
+    setUser(null); // ✅ This is CRUCIAL
   };
-
+  
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
