@@ -4,6 +4,7 @@ import { AuthContext } from '../AuthContext';
 
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import Unauthorised from '../components/Unauthorised/Unauthorised';
 
 import Home from '../pages/Home/Home';
 import Issue from '../pages/Issue/Issue';
@@ -15,7 +16,8 @@ import WebAuth from '../pages/WebAuth/WebAuth';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Signup from '../pages/Signup/Signup';
 import Login from '../pages/Login/Login';
-import Contact from '../pages/Contact/Contact'; // ✅ ADDED
+import Contact from '../pages/Contact/Contact'; 
+
 
 // 🔒 Generic Protected Route
 const ProtectedRoute = ({ children }) => {
@@ -26,8 +28,15 @@ const ProtectedRoute = ({ children }) => {
 // 🔒 Role-Based Protected Route
 const RoleRoute = ({ children, roles }) => {
   const { user } = useContext(AuthContext);
-  if (!user) return <Login />;
-  if (!roles.includes(user.role)) return <Home />;
+  if (!user) {
+    console.log('User not logged in, redirecting to login...');
+    return <Login />; // Redirect to login if user is not logged in
+  }
+  if (!roles.includes(user.role)) {
+    return (
+      <Unauthorised /> 
+    )
+  }
   return children;
 };
 

@@ -25,7 +25,7 @@ function Header() {
     navigate('/');
   };
 
-  const navItems = ['Home', 'About', 'Contact']; // ✅ Contact added
+  const navItems = ['About', 'Contact']; // ✅ Contact added
   if (user?.role === 'user') navItems.push('Verify', 'Certificates');
   if (user?.role === 'admin') navItems.push('Issue', 'Admin-Certificates');
   if (user?.role === 'superadmin') navItems.push('Dashboard');

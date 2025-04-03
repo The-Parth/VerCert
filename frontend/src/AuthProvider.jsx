@@ -31,7 +31,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Fixed: Now accepts and passes 'role'
   const register = async (fullName, email, password, role) => {
     try {
       const res = await API.post('/auth/register', {
@@ -47,7 +46,7 @@ const AuthProvider = ({ children }) => {
   };
   const logout = async () => {
     await API.get('/auth/logout');
-    setUser(null); // ✅ This is CRUCIAL
+    setUser(null); 
   };
   
   return (

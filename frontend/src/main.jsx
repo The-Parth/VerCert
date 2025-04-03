@@ -9,8 +9,6 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      {' '}
-      {/* ✅ Now wrapping everything with AuthProvider */}
       <RouterProvider router={router} />
     </AuthProvider>
   </React.StrictMode>
