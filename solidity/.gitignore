@@ -1,1 +1,3 @@
 artifacts/
+hardhat/node_modules/
+*.env
