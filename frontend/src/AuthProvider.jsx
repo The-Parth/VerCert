@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from './api';
-import { AuthContext } from './AuthContext'; 
+import { AuthContext } from './AuthContext';
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -46,9 +46,9 @@ const AuthProvider = ({ children }) => {
   };
   const logout = async () => {
     await API.get('/auth/logout');
-    setUser(null); 
+    setUser(null);
   };
-  
+
   return (
     <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}

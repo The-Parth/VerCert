@@ -32,7 +32,8 @@ const Dashboard = () => {
             Superadmin Dashboard
           </h2>
           <p className="text-center text-gray-400 mb-8">
-            Overview of institutions and certificate activity across the platform.
+            Overview of institutions and certificate activity across the
+            platform.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,20 +48,24 @@ const Dashboard = () => {
                 <div className="space-y-3 text-gray-300">
                   <p className="flex justify-between">
                     <span>Total Issued:</span>
-                    <span className="font-semibold text-white">{inst.issued}</span>
+                    <span className="font-semibold text-white">
+                      {inst.issued}
+                    </span>
                   </p>
                   <p className="flex justify-between">
                     <span>Active Certificates:</span>
-                    <span className="font-semibold text-green-400">{inst.active}</span>
+                    <span className="font-semibold text-green-400">
+                      {inst.active}
+                    </span>
                   </p>
                   <p className="flex justify-between">
                     <span>Revoked:</span>
-                    <span className="font-semibold text-red-400">{inst.revoked}</span>
+                    <span className="font-semibold text-red-400">
+                      {inst.revoked}
+                    </span>
                   </p>
                 </div>
-                <button
-                  className="group relative w-full mt-6 py-4 px-6 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-lg shadow-lg shadow-blue-500/30 transition-all duration-300"
-                >
+                <button className="group relative w-full mt-6 py-4 px-6 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-lg shadow-lg shadow-blue-500/30 transition-all duration-300">
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Manage Institution
                     <svg

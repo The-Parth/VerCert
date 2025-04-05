@@ -70,13 +70,18 @@ const Contact = () => {
 
           <div className="mt-12 text-center text-gray-400 text-sm">
             Or email us directly at{' '}
-            <a href="mailto:support@vercert.io" className="text-cyan-400 underline">
+            <a
+              href="mailto:support@vercert.io"
+              className="text-cyan-400 underline"
+            >
               vercert@parthb.xyz
             </a>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-4 text-cyan-400">Our Office</h2>
+            <h2 className="text-2xl font-bold mb-4 text-cyan-400">
+              Our Office
+            </h2>
             <iframe
               title="VerCert Office"
               src="https://maps.google.com/maps?q=Times%20Square%20New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"

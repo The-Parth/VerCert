@@ -32,7 +32,8 @@ const AdminCertificates = () => {
           Issued Certificates
         </h1>
         <p className="text-gray-400 mb-8">
-          Here are all certificates issued by your institution. You can review or revoke them if necessary.
+          Here are all certificates issued by your institution. You can review
+          or revoke them if necessary.
         </p>
 
         <div className="overflow-x-auto rounded-xl border border-gray-700 shadow-md">
@@ -49,12 +50,17 @@ const AdminCertificates = () => {
             </thead>
             <tbody>
               {dummyCerts.map((cert) => (
-                <tr key={cert.id} className="border-b border-gray-700 hover:bg-gray-800 transition">
+                <tr
+                  key={cert.id}
+                  className="border-b border-gray-700 hover:bg-gray-800 transition"
+                >
                   <td className="px-6 py-4">{cert.id}</td>
                   <td className="px-6 py-4">{cert.name}</td>
                   <td className="px-6 py-4">{cert.course}</td>
                   <td className="px-6 py-4">{cert.issuedDate}</td>
-                  <td className={`px-6 py-4 font-semibold ${cert.status === 'Valid' ? 'text-green-400' : 'text-red-400'}`}>
+                  <td
+                    className={`px-6 py-4 font-semibold ${cert.status === 'Valid' ? 'text-green-400' : 'text-red-400'}`}
+                  >
                     {cert.status}
                   </td>
                   <td className="px-6 py-4">

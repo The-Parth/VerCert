@@ -30,7 +30,12 @@ const Signup = () => {
     console.log('Submitting form data:', formData); // ✅ Debug
 
     // ✅ Frontend validation
-    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       toast.error('All fields are required.');
       return;
     }
@@ -136,7 +141,11 @@ const Signup = () => {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute inset-y-0 right-0 pr-3 flex items-start mt-[40px]"
             >
-              {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              {showConfirmPassword ? (
+                <FaEyeSlash size={20} />
+              ) : (
+                <FaEye size={20} />
+              )}
             </button>
           </div>
 

@@ -5,7 +5,8 @@ import { AuthContext } from '../AuthContext';
 const PrivateRoute = ({ children, roles }) => {
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) return <div className="text-center mt-10 text-white">Loading...</div>;
+  if (loading)
+    return <div className="text-center mt-10 text-white">Loading...</div>;
 
   if (!user) return <Navigate to="/login" replace />;
 

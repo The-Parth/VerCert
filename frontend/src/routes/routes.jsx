@@ -16,8 +16,7 @@ import WebAuth from '../pages/WebAuth/WebAuth';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Signup from '../pages/Signup/Signup';
 import Login from '../pages/Login/Login';
-import Contact from '../pages/Contact/Contact'; 
-
+import Contact from '../pages/Contact/Contact';
 
 // 🔒 Generic Protected Route
 const ProtectedRoute = ({ children }) => {
@@ -33,9 +32,7 @@ const RoleRoute = ({ children, roles }) => {
     return <Login />; // Redirect to login if user is not logged in
   }
   if (!roles.includes(user.role)) {
-    return (
-      <Unauthorised /> 
-    )
+    return <Unauthorised />;
   }
   return children;
 };
@@ -79,29 +76,19 @@ const router = createBrowserRouter([
   // 🔐 USER ROUTES
   {
     path: '/verify',
-    element: (
-      <RoleRoute roles={['user']}>
-        {withLayout(<Verify />)}
-      </RoleRoute>
-    ),
+    element: <RoleRoute roles={['user']}>{withLayout(<Verify />)}</RoleRoute>,
   },
   {
     path: '/certificates',
     element: (
-      <RoleRoute roles={['user']}>
-        {withLayout(<Certificates />)}
-      </RoleRoute>
+      <RoleRoute roles={['user']}>{withLayout(<Certificates />)}</RoleRoute>
     ),
   },
 
   // 🔐 ADMIN ROUTES
   {
     path: '/issue',
-    element: (
-      <RoleRoute roles={['admin']}>
-        {withLayout(<Issue />)}
-      </RoleRoute>
-    ),
+    element: <RoleRoute roles={['admin']}>{withLayout(<Issue />)}</RoleRoute>,
   },
   {
     path: '/admin-certificates',
@@ -116,9 +103,7 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: (
-      <RoleRoute roles={['superadmin']}>
-        {withLayout(<Dashboard />)}
-      </RoleRoute>
+      <RoleRoute roles={['superadmin']}>{withLayout(<Dashboard />)}</RoleRoute>
     ),
   },
 ]);
