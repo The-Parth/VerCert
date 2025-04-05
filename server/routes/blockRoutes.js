@@ -15,7 +15,7 @@ const provider = new  JsonRpcProvider(process.env.RPC_URL);
 const wallet = new Wallet(`0x${process.env.PRIVATE_KEY}`, provider);
 const contract = new Contract(
   process.env.CONTRACT_ADDRESS,
-  DocumentStorageABI['abi'],    
+  DocumentStorageABI,  
   wallet
 );
 
