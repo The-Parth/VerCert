@@ -12,7 +12,7 @@ import Verify from '../pages/Verify/Verify';
 import Certificates from '../pages/Certificates/Certificates';
 import AdminCertificates from '../pages/AdminCertificates/AdminCertificates';
 import About from '../pages/About/About';
-import WebAuth from '../pages/WebAuth/WebAuth';
+import WebAuth from '../pages/WebAuth/PasskeyAuth';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Signup from '../pages/Signup/Signup';
 import Login from '../pages/Login/Login';

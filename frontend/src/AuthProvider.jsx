@@ -31,6 +31,23 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithPasskey = async (email, assertion) => {
+    // Just handle the Verification of the assertion
+    try {
+      const res = await API.post('/webauth/verify-login', {
+        username: email,
+        assertion,
+      });
+      console.log(res.data);
+      if (res.data.success) {
+        setUser(res.data.user);
+      }
+      return res.data;
+    } catch (error) {
+      return error.response.data;
+    }
+  };
+
   const register = async (fullName, email, password, role) => {
     try {
       const res = await API.post('/auth/register', {
@@ -50,7 +67,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, loginWithPasskey, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

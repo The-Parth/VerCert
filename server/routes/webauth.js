@@ -8,6 +8,7 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from '@simplewebauthn/server';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -46,20 +47,51 @@ const loginLimiter = rateLimit({
   },
 });
 
+const authenticateUser = (req, res, next) => {
+  console.log('Authenticating user...');
+  const token = req.cookies.token;
+  console.log('Token:', token);
+
+  if (!token) {
+    return res.status(401).json({ msg: 'Unauthorized: No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ msg: 'Invalid or expired token' });
+  }
+};
+
 webauthRouter.use(generalLimiter);
 
 webauthRouter.get('/', (req, res) => {
   res.json({ message: 'Working' });
 });
 
-webauthRouter.post('/register', loginLimiter, async (req, res) => {
-  const { username } = req.body; // same as email
-  console.log('Username', username);
-  console.log('MONGO', process.env.MONGO_URI);
-  // check if user exists
+webauthRouter.post(
+  '/register',
+  authenticateUser,
+  loginLimiter,
+  async (req, res) => {
+    const user = await User.findById(req.user.id).select('-password'); // Exclude password
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    const { username } = req.body;
+    const email = user.email;
+    if (!username) {
+      return res.status(400).json({ error: 'Username is required' });
+    }
+    if (username !== email) {
+      return res.status(400).json({ error: 'Username does not match email' });
+    }
+    console.log('Username', username);
+    console.log('MONGO', process.env.MONGO_URI);
+    // check if user exists
 
-  // Disabled temporarily
-  /*
+    // Disabled temporarily
+    /*
   const user = await User.findOne({
     email: username});
   if (!user) {
@@ -67,56 +99,57 @@ webauthRouter.post('/register', loginLimiter, async (req, res) => {
   }
     */
 
-  // They are registered now, so find if they are in the passkey database
+    // They are registered now, so find if they are in the passkey database
 
-  var passkeyUser = await Passkey.findOne({
-    username: username,
-  });
-
-  console.log('Username', passkeyUser);
-
-  var userID = new Uint8Array(32);
-
-  if (!passkeyUser) {
-    // Create the user in the passkey database
-    crypto.randomFillSync(userID);
-
-    const newPasskeyUser = new Passkey({
+    var passkeyUser = await Passkey.findOne({
       username: username,
-      userID: userID,
-      passkeys: [],
-      inProcess: [],
     });
-    await newPasskeyUser.save();
 
-    passkeyUser = newPasskeyUser;
-  } else {
-    userID = passkeyUser.userID;
+    console.log('Username', passkeyUser);
+
+    var userID = new Uint8Array(32);
+
+    if (!passkeyUser) {
+      // Create the user in the passkey database
+      crypto.randomFillSync(userID);
+
+      const newPasskeyUser = new Passkey({
+        username: username,
+        userID: userID,
+        passkeys: [],
+        inProcess: [],
+      });
+      await newPasskeyUser.save();
+
+      passkeyUser = newPasskeyUser;
+    } else {
+      userID = passkeyUser.userID;
+    }
+
+    const options = await generateRegistrationOptions({
+      rpName: 'VerCert',
+      rpID: HOST,
+      userID: userID,
+      userName: username,
+      attestationType: 'none',
+      authenticatorSelection: {
+        residentKey: 'preferred',
+        userVerification: 'preferred',
+      },
+    });
+
+    const newInProcessItem = new InProcessItem({
+      challenge: options.challenge,
+    });
+
+    await newInProcessItem.save();
+
+    passkeyUser.inProcess.push(newInProcessItem);
+    await passkeyUser.save();
+    // console.log('Passkey User', passkeyUser);
+    res.json(options);
   }
-
-  const options = await generateRegistrationOptions({
-    rpName: 'VerCert',
-    rpID: HOST,
-    userID: userID,
-    userName: username,
-    attestationType: 'none',
-    authenticatorSelection: {
-      residentKey: 'preferred',
-      userVerification: 'preferred',
-    },
-  });
-
-  const newInProcessItem = new InProcessItem({
-    challenge: options.challenge,
-  });
-
-  await newInProcessItem.save();
-
-  passkeyUser.inProcess.push(newInProcessItem);
-  await passkeyUser.save();
-  // console.log('Passkey User', passkeyUser);
-  res.json(options);
-});
+);
 
 webauthRouter.post('/verify-registration', async (req, res) => {
   const { username, credential } = req.body;
@@ -287,13 +320,48 @@ webauthRouter.post('/verify-login', async (req, res) => {
 
       // Remove the challenge from the in-memory map after successful verification
       currentChallenges.delete(username);
-      res.json({ success: true });
+      // If successful, login the user and create a JWT token
+      const loggedUser = await User.findOne({
+        email: username,
+      });
+
+      if (!loggedUser) return res.status(400).json({ error: 'User not found' });
+      // Ensure JWT secret is available
+      if (!process.env.JWT_SECRET) {
+        throw new Error('Missing JWT_SECRET in .env file');
+      }
+
+      // Generate JWT Token
+      const token = jwt.sign(
+        { id: loggedUser._id, email: loggedUser.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '30d',
+        }
+      );
+
+      // Set secure HTTP-only cookie
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+      });
+      res.json({
+        success: true,
+        token,
+        user: {
+          id: loggedUser._id,
+          email: loggedUser.email,
+          fullName: loggedUser.fullName,
+          role: loggedUser.role,
+        },
+      });
     } else {
       res.json({ success: false });
     }
   } catch (err) {
     console.error(err);
-    res.status(400).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
