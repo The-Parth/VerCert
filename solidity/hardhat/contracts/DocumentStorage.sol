@@ -13,6 +13,7 @@ contract DocumentStorage is
   struct Document {
     bytes32 sha256Hash; // Hash of the file/content
     string docId; // String identifier (e.g., your Azure storage reference)
+    uint256 issueDate; // Timestamp of when the document was issued
   }
 
   address[3] private owners;
@@ -59,7 +60,7 @@ contract DocumentStorage is
     owners[2] = _owner3;
 
     __UUPSUpgradeable_init();
-    __ReentrancyGuard_init(); 
+    __ReentrancyGuard_init();
   }
 
   function _authorizeUpgrade(
@@ -152,13 +153,15 @@ contract DocumentStorage is
     Document storage existing = _userDocuments[userId][docId];
     require(existing.sha256Hash == 0, 'Document already stored');
 
-    _userDocuments[userId][docId] = Document(sha256Hash, docId);
+    _userDocuments[userId][docId] = Document(sha256Hash, docId, block.timestamp);
+    // Add the document ID to the user's list of documents
     _userDocIds[userId].push(docId);
 
     emit DocumentStored(userId, sha256Hash, docId);
   }
 
-  // Revoke a document (owners or authorized revokers only)
+  mapping(string => mapping(string => bool)) private _revokedDocuments;
+
   function revokeDocument(
     string calldata userId,
     string calldata docId
@@ -175,6 +178,7 @@ contract DocumentStorage is
     require(doc.sha256Hash != 0, 'Document not found');
 
     emit DocumentRevoked(userId, doc.sha256Hash, doc.docId);
+    _revokedDocuments[userId][docId] = true; // Mark as revoked
     delete _userDocuments[userId][docId];
 
     // Remove the docId from the user's list
@@ -189,6 +193,13 @@ contract DocumentStorage is
         break;
       }
     }
+  }
+
+  function isRevoked(
+    string calldata userId,
+    string calldata docId
+  ) external view returns (bool) {
+    return _revokedDocuments[userId][docId];
   }
 
   // Get a single document for a user
@@ -217,5 +228,14 @@ contract DocumentStorage is
       docs[i] = _userDocuments[userId][ids[i]];
     }
     return docs;
+  }
+
+  function verifyDocument(
+    string calldata userId,
+    string calldata docId,
+    bytes32 sha256Hash
+  ) external view returns (bool) {
+    Document storage doc = _userDocuments[userId][docId];
+    return doc.sha256Hash == sha256Hash;
   }
 }

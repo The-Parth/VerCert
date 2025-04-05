@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  snowflakeId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   fullName: {
     type: String,
     required: true,

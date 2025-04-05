@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import webauthRoutes from './routes/webauth.js';
+import blockRoutes from './routes/blockRoutes.js';
 
 dotenv.config();
 const hosted = process.env.HOSTED || false;
@@ -39,6 +40,7 @@ app.get(`${prepend}/`, (req, res) => {
 app.use(`${prepend}/auth`, authRoutes);
 app.use(`${prepend}/webauth`, webauthRoutes);
 app.use(`${prepend}/upload`, uploadRoutes);
+app.use(`${prepend}/block`, blockRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, {})

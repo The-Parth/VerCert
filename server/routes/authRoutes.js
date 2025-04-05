@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import dotenv, { parse } from 'dotenv';
+import crypto from 'crypto';
 
 dotenv.config();
 
@@ -25,6 +26,26 @@ const authenticateUser = (req, res, next) => {
     return res.status(401).json({ msg: 'Invalid or expired token' });
   }
 };
+
+const EPOCH = 1420070400000n;
+
+function generateSnowflake(email, timestamp = Date.now()) {
+  const msSinceEpoch = BigInt(timestamp) - EPOCH;
+  const timePart = msSinceEpoch << 22n; // 42 bits
+
+  // Hash the email to simulate Worker ID and Process ID (10 bits total)
+  const hash = crypto.createHash('sha256').update(email).digest();
+  const workerId = BigInt(hash[0] & 0b00011111); // 5 bits
+  const processId = BigInt(hash[1] & 0b00011111); // 5 bits
+
+  const workerProcessPart = (workerId << 17n) | (processId << 12n);
+
+  // Sequence number (12 bits, ideally per-ms sequence; use random here)
+  const sequence = BigInt(Math.floor(Math.random() * 4096)) & 0xFFFn;
+
+  const snowflake = timePart | workerProcessPart | sequence;
+  return snowflake.toString();
+}
 
 //  Test API Route
 router.get('/', (req, res) => {
@@ -55,7 +76,8 @@ router.post('/register', async (req, res) => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new User({ fullName, email, password: hashedPassword, role });
+    const snowflakeId = generateSnowflake(email);
+    const newUser = new User({ fullName, email, password: hashedPassword, snowflakeId, role });
 
     await newUser.save();
 
