@@ -30,6 +30,10 @@ contract DocumentStorage is
   // Keep track of all docIds for a given userId for easy enumeration
   mapping(string => string[]) private _userDocIds;
 
+  string[] private _globalDocIds; // Global list of all document IDs
+  mapping(string => string[]) private docIdToUserId; // Mapping from docId to userId
+  mapping(string => bytes32) private docIdToHash; // Mapping from docId to hash
+
   event DocumentStored(string indexed userId, bytes32 sha256Hash, string docId);
   event DocumentRevoked(
     string indexed userId,
@@ -153,9 +157,20 @@ contract DocumentStorage is
     Document storage existing = _userDocuments[userId][docId];
     require(existing.sha256Hash == 0, 'Document already stored');
 
-    _userDocuments[userId][docId] = Document(sha256Hash, docId, block.timestamp);
+    _userDocuments[userId][docId] = Document(
+      sha256Hash,
+      docId,
+      block.timestamp
+    );
     // Add the document ID to the user's list of documents
     _userDocIds[userId].push(docId);
+
+    // Add the document ID to the global list
+    _globalDocIds.push(docId);
+    // Map the document ID to the user ID
+    docIdToUserId[docId].push(userId);
+    // Map the document ID to the hash
+    docIdToHash[docId] = sha256Hash;
 
     emit DocumentStored(userId, sha256Hash, docId);
   }
@@ -193,6 +208,32 @@ contract DocumentStorage is
         break;
       }
     }
+
+    // Remove the document ID from the global list
+    for (uint256 i = 0; i < _globalDocIds.length; i++) {
+      if (
+        keccak256(abi.encodePacked(_globalDocIds[i])) ==
+        keccak256(abi.encodePacked(docId))
+      ) {
+        _globalDocIds[i] = _globalDocIds[_globalDocIds.length - 1];
+        _globalDocIds.pop();
+        break;
+      }
+    }
+    // Remove the document ID from the userId mapping
+    string[] storage userIds = docIdToUserId[docId];
+    for (uint256 i = 0; i < userIds.length; i++) {
+      if (
+        keccak256(abi.encodePacked(userIds[i])) ==
+        keccak256(abi.encodePacked(userId))
+      ) {
+        userIds[i] = userIds[userIds.length - 1];
+        userIds.pop();
+        break;
+      }
+    }
+    // Remove the document ID from the hash mapping
+    delete docIdToHash[docId];
   }
 
   function isRevoked(
@@ -238,4 +279,48 @@ contract DocumentStorage is
     Document storage doc = _userDocuments[userId][docId];
     return doc.sha256Hash == sha256Hash;
   }
+
+  function getOwners() external view returns (address[3] memory) {
+    return owners;
+  }
+
+  function verifyDocumentByDocId(
+    string calldata docId
+  ) external view returns (bytes32) {
+    return docIdToHash[docId];
+  }
+
+  function verifyDocumentsByHash(
+    bytes32 sha256Hash
+  ) external view returns (string[] memory, string[] memory) {
+    /**
+     * Computationally expensive operation to find all documents with the same hash.
+     * Kind of slow for large DBs, but 0 gas cost as it is a view function.
+     */
+    uint256 count = 0;
+    for (uint256 i = 0; i < _globalDocIds.length; i++) {
+      if (docIdToHash[_globalDocIds[i]] == sha256Hash) {
+        count++;
+      }
+    }
+
+    if (count == 0) {
+      return (new string[](0), new string[](0)); // No documents found
+    }
+
+    string[] memory userIds = new string[](count);
+    string[] memory docIds = new string[](count);
+    uint256 index = 0; 
+
+    for (uint256 i = 0; i < _globalDocIds.length; i++) {
+      if (docIdToHash[_globalDocIds[i]] == sha256Hash) {
+        userIds[index] = docIdToUserId[_globalDocIds[i]][0]; // Assuming one userId per docId
+        docIds[index] = _globalDocIds[i];
+        index++;
+      }
+    }
+
+    return (userIds, docIds); // Return the arrays of userIds and docIds
+  }
+  
 }

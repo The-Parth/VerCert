@@ -15,6 +15,7 @@ module.exports = {
     },
 	anvil: {
 	  url: "http://127.0.0.1:8545",
+    accounts: [`0x${process.env.PRIVATE_KEY}`],
 	}
 
   },
