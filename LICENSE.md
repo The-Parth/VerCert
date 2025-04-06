@@ -1,7 +1,7 @@
 # Vercert Non-Commercial License Agreement (NCLA)
 
 **Copyright (c) VerCert Team, 2025**  
-All rights reserved.  
+All rights reserved.
 
 ---
 
@@ -57,10 +57,12 @@ Vercert reserves the right to determine whether a project qualifies as “truly 
 The following actions are **strictly prohibited** without **explicit, written approval** from Vercert:
 
 - **Modification or Derivative Works:**
+
   - You may not alter, fork, repackage, or build upon this Software for independent distribution or use outside the original repository.
   - Contributions (pull requests) are permitted but do not constitute permission to create standalone forks or derivatives.
 
 - **Commercial Use:**
+
   - You may not use the Software, in whole or in part, in any commercial context without prior written consent.
   - This includes, but is not limited to, usage in:
     - Paid applications or services
@@ -84,6 +86,7 @@ Vercert
 📧 vercert@parthb.xyz
 
 Your request must include:
+
 - Intended use and scope
 - Whether the use is commercial, academic, or government-funded
 - Name and legal status of the organization
@@ -94,11 +97,13 @@ Your request must include:
 ## 5. Termination
 
 This license is subject to **immediate termination** upon:
+
 - Breach of any condition or restriction described herein
 - Misrepresentation of an entity’s non-commercial status
 - Unauthorized distribution or commercial exploitation
 
 Upon termination, you must immediately:
+
 - Cease all use of the Software
 - Delete all copies, derivatives, and implementations of the Software in your possession
 - Certify such deletion to Vercert upon request
@@ -109,6 +114,7 @@ Upon termination, you must immediately:
 
 This Software is provided **"AS IS"**, without warranty of any kind, either express or implied.  
 Vercert shall not be held liable for any damages arising from the use, misuse, or inability to use the Software, including but not limited to:
+
 - Data loss
 - System failure
 - Business interruption

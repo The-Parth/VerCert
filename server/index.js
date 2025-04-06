@@ -17,13 +17,14 @@ dotenv.config();
 const hosted = process.env.HOSTED || false;
 
 const app = express();
-app.use(cors({
-  origin: hosted? process.env.HOST_URL : 'http://localhost:5000',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: hosted ? process.env.HOST_URL : 'http://localhost:5000',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 const version = process.env.VERSION || 1;
-
 
 const prepend = hosted ? '/api' : '';
 

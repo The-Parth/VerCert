@@ -54,20 +54,14 @@ const Login = () => {
       // Transform the assertion response.
       const assertionResponse = transformGetAssertRes(assertion);
       // Step 3: Send assertion to backend for verification.
-      const verifyResp = await loginWithPasskey(
-        email,
-        assertionResponse
-      );
-      console.log(verifyResp);  
-      setMessage(
-        verifyResp.success ? 'Login successful!' : 'Login failed.'
-      );
+      const verifyResp = await loginWithPasskey(email, assertionResponse);
+      console.log(verifyResp);
+      setMessage(verifyResp.success ? 'Login successful!' : 'Login failed.');
 
       if (verifyResp.success && verifyResp.token) {
         // ✅ Redirect to homepage after successful login
         navigate('/');
-      }
-      else {
+      } else {
         setMessage('Login failed');
       }
     } catch (error) {

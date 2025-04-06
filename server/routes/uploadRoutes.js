@@ -36,7 +36,12 @@ router.post('/uploadcert', async (req, res) => {
     const fileUrl = await uploadToAzure(file.data, fileName, file.mimetype);
     const sasUrl = await generateSasUrl(fileUrl, 10); // 10 minutes expiry
     const blobUrl = fileUrl.split('?')[0]; // Remove SAS token from URL
-    res.json({ msg: 'File uploaded successfully!', url: fileUrl, blobUrl, sasUrl });
+    res.json({
+      msg: 'File uploaded successfully!',
+      url: fileUrl,
+      blobUrl,
+      sasUrl,
+    });
   } catch (error) {
     res.status(500).json({ msg: 'File upload failed', error: error.message });
   }

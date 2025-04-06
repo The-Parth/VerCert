@@ -41,7 +41,7 @@ function generateSnowflake(email, timestamp = Date.now()) {
   const workerProcessPart = (workerId << 17n) | (processId << 12n);
 
   // Sequence number (12 bits, ideally per-ms sequence; use random here)
-  const sequence = BigInt(Math.floor(Math.random() * 4096)) & 0xFFFn;
+  const sequence = BigInt(Math.floor(Math.random() * 4096)) & 0xfffn;
 
   const snowflake = timePart | workerProcessPart | sequence;
   return snowflake.toString();
@@ -77,7 +77,13 @@ router.post('/register', async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, salt);
     const snowflakeId = generateSnowflake(email);
-    const newUser = new User({ fullName, email, password: hashedPassword, snowflakeId, role });
+    const newUser = new User({
+      fullName,
+      email,
+      password: hashedPassword,
+      snowflakeId,
+      role,
+    });
 
     await newUser.save();
 
@@ -119,7 +125,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '30d' } 
+      { expiresIn: '30d' }
     );
 
     // Set secure HTTP-only cookie

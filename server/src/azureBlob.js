@@ -63,30 +63,33 @@ export async function uploadToAzure(fileBuffer, fileName, mimeType) {
  * @returns {Promise<string>} - Returns the secure SAS URL.
  */
 export async function generateSasUrl(publicUrl, expiryMinutes = 10) {
-    try {
-      // Extract and decode the blob name from the URL
-      const decodedUrl = decodeURIComponent(publicUrl);
-      const fileName = decodedUrl.split('/').pop(); // Correctly get the file name
-  
-      if (!fileName) throw new Error('Invalid public URL format.');
-  
-      // Set expiry time
-      const expiresOn = new Date();
-      expiresOn.setMinutes(expiresOn.getMinutes() + expiryMinutes);
-  
-      // Generate SAS token with read-only permission
-      const sasToken = generateBlobSASQueryParameters({
+  try {
+    // Extract and decode the blob name from the URL
+    const decodedUrl = decodeURIComponent(publicUrl);
+    const fileName = decodedUrl.split('/').pop(); // Correctly get the file name
+
+    if (!fileName) throw new Error('Invalid public URL format.');
+
+    // Set expiry time
+    const expiresOn = new Date();
+    expiresOn.setMinutes(expiresOn.getMinutes() + expiryMinutes);
+
+    // Generate SAS token with read-only permission
+    const sasToken = generateBlobSASQueryParameters(
+      {
         containerName: CONTAINER_NAME,
         blobName: fileName,
         expiresOn,
         permissions: BlobSASPermissions.parse('r'), // Read-only access
-      }, sharedKeyCredential).toString();
-  
-      // Construct the correct SAS URL
-      const sasUrl = `${containerClient.getBlockBlobClient(fileName).url}?${sasToken}`;
-      return sasUrl;
-    } catch (error) {
-      console.error('Error generating SAS URL:', error.message);
-      throw error;
-    }
+      },
+      sharedKeyCredential
+    ).toString();
+
+    // Construct the correct SAS URL
+    const sasUrl = `${containerClient.getBlockBlobClient(fileName).url}?${sasToken}`;
+    return sasUrl;
+  } catch (error) {
+    console.error('Error generating SAS URL:', error.message);
+    throw error;
   }
+}
