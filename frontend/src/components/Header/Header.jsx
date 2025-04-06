@@ -76,8 +76,14 @@ function Header() {
                 <div className="absolute right-0 mt-2 bg-gray-900 border border-gray-700 shadow-lg rounded-lg py-2 w-44 z-50 text-sm">
                   {user ? (
                     <>
-                      <div className="px-4 py-2 text-cyan-400 font-semibold">
-                        Hi, {user.fullName.split(' ')[0]}
+                      <div className="px-4 py-2 text-cyan-400 font-semibold"
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          navigate('/webauth');
+                          handleNavigation();
+                        }
+                      }>
+                        Hi, {user.fullName}
                       </div>
                       <button
                         onClick={handleLogout}
