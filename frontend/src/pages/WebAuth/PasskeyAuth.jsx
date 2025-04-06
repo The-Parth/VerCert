@@ -83,7 +83,7 @@ const PasskeyAuth = () => {
     },
   ];
 
-  console.log('User:', user);
+  // console.log('User:', user);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white py-24">

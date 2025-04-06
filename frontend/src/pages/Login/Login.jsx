@@ -55,7 +55,7 @@ const Login = () => {
       const assertionResponse = transformGetAssertRes(assertion);
       // Step 3: Send assertion to backend for verification.
       const verifyResp = await loginWithPasskey(email, assertionResponse);
-      console.log(verifyResp);
+      // console.log("Passkey login response:", verifyResp);
       setMessage(verifyResp.success ? 'Login successful!' : 'Login failed.');
 
       if (verifyResp.success && verifyResp.token) {

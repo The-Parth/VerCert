@@ -27,7 +27,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Submitting form data:', formData); // ✅ Debug
+    // console.log('Submitting form data:', formData); // ✅ Debug
 
     // ✅ Frontend validation
     if (

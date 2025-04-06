@@ -86,8 +86,8 @@ webauthRouter.post(
     if (username !== email) {
       return res.status(400).json({ error: 'Username does not match email' });
     }
-    console.log('Username', username);
-    console.log('MONGO', process.env.MONGO_URI);
+    // console.log('Username', username);
+    // console.log('MONGO', process.env.MONGO_URI);
     // check if user exists
 
     // Disabled temporarily

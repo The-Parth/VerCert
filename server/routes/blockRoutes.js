@@ -199,7 +199,7 @@ router.get('/isRevoked', async (req, res) => {
 router.get('/getDocumentIds', async (req, res) => {
   try {
     const { userId } = req.query;
-    console.log('userId:', typeof userId, userId);
+    // console.log('userId:', typeof userId, userId);
 
     const docIds = await contract.getDocumentIds(userId);
     return res.status(200).json({ docIds });

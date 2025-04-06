@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
         username: email,
         assertion,
       });
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         setUser(res.data.user);
       }
