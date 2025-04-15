@@ -194,7 +194,7 @@ router.get('/getDocument', async (req, res) => {
     // Get the blob URL from the storedDocId
     const blobUrl = `${process.env.AZURE_BLOB_URL}/${storedDocId}`;
     // Generate a temporary SAS URL for the blob
-    const sasUrl = await generateSasUrl(blobUrl, 10); // 10 minutes expiry
+    const sasUrl = await generateSasUrl(blobUrl, 60); // 10 minutes expiry
     return res.status(200).json({
       sha256Hash: hash,
       docId: storedDocId,
