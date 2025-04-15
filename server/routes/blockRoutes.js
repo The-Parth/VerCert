@@ -59,14 +59,24 @@ router.post('/uploadAndStore', generalLimiter, async (req, res) => {
       );
     }
 
-    const { userId } = req.body;
+    const { userId, issuer } = req.body;
+    
+        if (!userId) {
+          throw new Error('userId is required');
+        }
+        if (!issuer) {
+          issuer = "admin"; // Default issuer
+        }
+        if (issuer.length > 15) {
+          throw new Error('Issuer name is too long');
+        }
+
+        // process issuer name to remove spaces and special characters
+        const processedIssuer = issuer.replace(/[^a-zA-Z0-9]/g, '');
+
     const uploadedFile = req.files.file; // from express-fileupload
     const fileBuffer = uploadedFile.data;
-    const fileName = `${userId}-${Date.now()}-${uploadedFile.name}`; // Unique file name
-
-    if (!userId) {
-      throw new Error('userId is required');
-    }
+    const fileName = `${userId}-${processedIssuer}-${Date.now()}-${uploadedFile.name}`; // Unique file name including issuer
     if (!uploadedFile) {
       throw new Error('File is required');
     }
