@@ -112,6 +112,7 @@ const Certificates = () => {
                 <th className="px-6 py-4">Hash</th>
                 <th className="px-6 py-4">Issuer</th>
                 <th className="px-6 py-4">Timestamp</th>
+                <th className="px-6 py-4">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -140,11 +141,27 @@ const Certificates = () => {
                   <td className="px-6 py-4 text-gray-400">
                     {new Date(cert.timestamp * 1000).toLocaleString()}
                   </td>
+                  <td className="px-6 py-4 flex gap-2">
+                    <button
+                      className="bg-cyan-700 hover:bg-cyan-800 text-white px-2 py-1 rounded text-xs"
+                      title="Copy full name"
+                      onClick={() => handleCopyToClipboard(name)}
+                    >
+                      Copy
+                    </button>
+                    <button
+                      className="bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs"
+                      title="Share (coming soon)"
+                      onClick={() => {}}
+                    >
+                      Share
+                    </button>
+                  </td>
                 </tr>
               ))}
               {Object.keys(userCertificates).length === 0 && (
                 <tr>
-                  <td colSpan="3" className="text-center py-6 text-gray-500">
+                  <td colSpan="5" className="text-center py-6 text-gray-500">
                     You don't have any certificates yet.
                   </td>
                 </tr>

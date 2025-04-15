@@ -59,7 +59,7 @@ router.post('/uploadAndStore', generalLimiter, async (req, res) => {
       );
     }
 
-    const { userId, issuer } = req.body;
+    const { userId, issuer, customName } = req.body;
     
         if (!userId) {
           throw new Error('userId is required');
@@ -76,7 +76,17 @@ router.post('/uploadAndStore', generalLimiter, async (req, res) => {
 
     const uploadedFile = req.files.file; // from express-fileupload
     const fileBuffer = uploadedFile.data;
-    const fileName = `${userId}-${processedIssuer}-${Date.now()}-${uploadedFile.name}`; // Unique file name including issuer
+    var name = uploadedFile.name;
+    if (customName) {
+      // get extension 
+      const parts = name.split('.');
+      const extension = parts.pop();
+      // replace slashes, dots in customName, keep other characters
+      name = customName.replace(/[\/\\\.]/g, '');
+      name = name + '.' + extension;
+    }
+
+    const fileName = `${userId}-${processedIssuer}-${Date.now()}-${name}`; // Unique file name including issuer
     if (!uploadedFile) {
       throw new Error('File is required');
     }
@@ -88,9 +98,19 @@ router.post('/uploadAndStore', generalLimiter, async (req, res) => {
       'image/png',
       'image/jpeg',
       'image/jpg',
+      'audio/mp4',
+      'audio/mpeg',
+      'audio/mp3',
+      'audio/ogg',
+      'audio/flac',
+      'audio/aac',
+      'audio/m4a',
+      'audio/x-m4a',
+      'audio/x-aac',
+      'audio/wav'
     ];
     if (!allowedTypes.includes(uploadedFile.mimetype)) {
-      throw new Error('Invalid file type');
+      throw new Error('Invalid file type. : ' + uploadedFile.mimetype);
     }
 
     // 1. Upload to Azure Blob
@@ -111,7 +131,7 @@ router.post('/uploadAndStore', generalLimiter, async (req, res) => {
     const tx = await contract.storeDocument(userId, fileName, sha256Bytes);
     // await tx.wait();
 
-    const sasUrl = await generateSasUrl(blobUrl, 10);
+    const sasUrl = await generateSasUrl(blobUrl, 60);
 
     return res.status(200).json({
       message: 'File uploaded and document stored successfully',
@@ -226,6 +246,10 @@ router.get('/getDocumentIds', async (req, res) => {
 router.get('/getAllDocumentsForUser', async (req, res) => {
   try {
     const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'Missing userId parameter' });
+    }
 
     const documents = await contract.getAllDocumentsForUser(userId);
     const serializedDocuments = documents.reduce((acc, doc) => {

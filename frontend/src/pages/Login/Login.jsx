@@ -61,6 +61,8 @@ const Login = () => {
       if (verifyResp.success && verifyResp.token) {
         // ✅ Redirect to homepage after successful login
         navigate('/');
+        // refresh the page
+        window.location.reload();
       } else {
         setMessage('Login failed');
       }
@@ -76,6 +78,8 @@ const Login = () => {
     if (response.token) {
       // ✅ Redirect to homepage after successful login
       navigate('/');
+      // refresh the page
+      window.location.reload();
     } else {
       alert(response.msg || 'Login failed');
     }
