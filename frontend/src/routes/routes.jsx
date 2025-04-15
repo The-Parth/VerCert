@@ -81,7 +81,7 @@ const router = createBrowserRouter([
   {
     path: '/certificates',
     element: (
-      <RoleRoute roles={['user']}>{withLayout(<Certificates />)}</RoleRoute>
+      <RoleRoute roles={['user', 'admin']}>{withLayout(<Certificates />)}</RoleRoute>
     ),
   },
 

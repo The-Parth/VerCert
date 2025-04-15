@@ -52,6 +52,25 @@ router.get('/', (req, res) => {
   res.json({ msg: 'Auth route' });
 });
 
+router.get('/snowflake', async (req, res) => {
+  // get snowflakeId of user by email
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).json({ msg: 'Email is required' });
+  }
+  
+  const foundUser = await User.findOne({ email });
+  if (!foundUser) {
+    return res.status(404).json({ msg: 'User not found' });
+  }
+
+  const snowflakeId = foundUser.snowflakeId;
+  if (!snowflakeId) {
+    return res.status(404).json({ msg: 'Snowflake ID not found' });
+  }
+  res.status(200).json({ snowflakeId });
+});
+
 //  Register User
 router.post('/register', async (req, res) => {
   try {

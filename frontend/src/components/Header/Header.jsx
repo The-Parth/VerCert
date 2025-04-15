@@ -27,7 +27,7 @@ function Header() {
 
   const navItems = ['About', 'Contact']; // ✅ Contact added
   if (user?.role === 'user') navItems.push('Verify', 'Certificates');
-  if (user?.role === 'admin') navItems.push('Issue', 'Admin-Certificates');
+  if (user?.role === 'admin') navItems.push('Issue', 'Admin-Certificates', 'Certificates');
   if (user?.role === 'superadmin') navItems.push('Dashboard');
 
   return (

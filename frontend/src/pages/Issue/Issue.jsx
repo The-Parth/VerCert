@@ -6,7 +6,7 @@ import API from '../../api';
 const Issue = () => {
   const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    userId: '',
+    email: '',
     file: null,
     customFileName: '',
   });
@@ -46,10 +46,34 @@ const Issue = () => {
   }, []);
 
   const handleIssue = async () => {
-    if (!formData.userId || !formData.file) {
+    if (!formData.email || !formData.file) {
       setMessage('⚠️ Please provide a User ID and select a file.');
       return;
     }
+
+    // check if valid email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setMessage('⚠️ Invalid email format.');
+      return;
+    }
+
+    // get snowflakeId of user by email
+    var response;
+    try {
+      response = await API.get(`/auth/snowflake?email=${formData.email}`);
+    }
+    catch (error) {
+      console.error('No id found for this email:', error);
+      setMessage('⚠️ No user found with this email.');
+      return;
+    }
+    const snowflakeId = response.data.snowflakeId;
+    if (!snowflakeId) {
+      setMessage('⚠️ Snowflake ID not found.');
+    }
+    formData.userId = snowflakeId;
+    console.log('User ID:', formData.userId);
 
     setLoading(true);
     setMessage('');
@@ -100,14 +124,14 @@ const Issue = () => {
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl shadow-blue-500/10">
             <div className="space-y-6">
               <div className="group relative">
-                <label className="text-sm text-gray-400 mb-1 block">Recipient User ID</label>
+                <label className="text-sm text-gray-400 mb-1 block">Recipient Email ID</label>
                 <input
-                  type="text"
-                  name="userId"
-                  placeholder="Enter the user ID of the recipient"
+                  type="email"
+                  name="email"
+                  placeholder="Enter the Email ID of the recipient"
                   className="w-full bg-gray-900/70 border border-gray-700 text-gray-100 placeholder-gray-500 px-5 py-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   onChange={handleInputChange}
-                  value={formData.userId}
+                  value={formData.email}
                 />
               </div>
 
