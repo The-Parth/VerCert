@@ -132,7 +132,7 @@ function Header() {
         </div>
 
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${isMenuOpen ? 'max-h-96' : 'max-h-0'} ${scrolled ? 'bg-black/80' : 'bg-transparent'}`}
+          className={`md:hidden overflow-hidden transition-all duration-300 ${isMenuOpen ? 'max-h-128' : 'max-h-0'} ${scrolled ? 'bg-black/80' : 'bg-transparent'}`}
         >
           <nav>
             <ul className="flex flex-col items-center py-4 space-y-4">
@@ -190,7 +190,7 @@ function Header() {
           </nav>
         </div>
       </header>
-      <div className="h-16 md:h-0"></div>
+      {/* <div className="h-16 md:h-0"></div> */}
     </>
   );
 }
